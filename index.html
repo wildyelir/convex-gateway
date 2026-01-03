@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convex Gateway - Account Generator [TESTNET]</title>
+    
+    <!-- Tailwind CSS for styling (loaded from CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Animation library for smooth effects -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- Icon library -->
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    
+    <style>
+        /* Purple gradient background - same as VorteX */
+        .gradient-bg { 
+            background: linear-gradient(135deg, #6e00ff 0%, #ff00a8 100%); 
+        }
+        
+        /* Glass effect for cards - same as VorteX */
+        .card-glass { 
+            background: rgba(255, 255, 255, 0.08); 
+            backdrop-filter: blur(10px); 
+            border: 1px solid rgba(255, 255, 255, 0.18); 
+        }
+        
+        /* Glowing button effect */
+        .btn-glow {
+            background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 50%, #d946ef 100%);
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-glow:hover {
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.7);
+            transform: scale(1.02);
+        }
+        
+        .btn-glow:active {
+            transform: scale(0.98);
+        }
+        
+        /* Disabled button state */
+        .btn-glow:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        /* Copy button styling */
+        .copy-btn {
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.2s ease;
+        }
+        
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Testnet banner styling */
+        .testnet-banner {
+            background: linear-gradient(90deg, #f59e0b 0%, #ef4444 100%);
+            animation: pulse-border 2s infinite;
+        }
+        
+        @keyframes pulse-border {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+        
+        /* Loading spinner */
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Result card animation */
+        .result-card {
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Key display styling - monospace font for keys */
+        .key-display {
+            font-family: 'Courier New', Courier, monospace;
+            word-break: break-all;
+            font-size: 0.75rem;
+            line-height: 1.4;
+        }
+        
+        /* Warning box */
+        .warning-box {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        
+        /* Success box */
+        .success-box {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+        
+        /* Info box */
+        .info-box {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen gradient-bg text-white">
+    
+    <!-- TESTNET WARNING BANNER - Always visible at top -->
+    <div class="testnet-banner py-2 text-center text-sm font-bold">
+        ⚠️ TESTNET ONLY - These accounts have NO real value - For testing purposes only ⚠️
+    </div>
+    
+    <!-- NAVIGATION BAR -->
+    <nav class="container mx-auto px-4 py-6 flex justify-between items-center">
+        <!-- Logo and title -->
+        <div class="flex items-center space-x-3">
+            <!-- Using the same logo style as VorteX -->
+            <div class="w-10 h-10 rounded-full bg-purple-500 flex items-center justify-center text-xl font-bold">
+                C
+            </div>
+            <div>
+                <span class="text-2xl font-bold">Convex Gateway</span>
+                <span class="ml-2 text-xs bg-orange-500 px-2 py-1 rounded-full">TESTNET</span>
+            </div>
+        </div>
+        
+        <!-- Navigation links -->
+        <div class="flex items-center space-x-4">
+            <a href="https://convex.world" target="_blank" 
+               class="text-white/70 hover:text-white transition-colors text-sm">
+                Learn More
+            </a>
+            <a href="https://wildyelir.github.io/vortex-testnet/" target="_blank" 
+               class="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                Open VorteX DEX
+            </a>
+        </div>
+    </nav>
+    
+    <!-- MAIN CONTENT AREA -->
+    <main class="container mx-auto px-4 py-12">
+        
+        <!-- Hero Section -->
+        <div class="text-center mb-12" data-aos="fade-up">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">
+                Create Your Convex Account
+            </h1>
+            <p class="text-xl text-white/70 max-w-2xl mx-auto">
+                Generate a new Convex testnet account instantly. 
+                Get your Account ID, Public Key, and Private Key with one click.
+            </p>
+        </div>
+        
+        <!-- Main Card - Account Generator -->
+        <div class="max-w-lg mx-auto" data-aos="fade-up" data-aos-delay="100">
+            
+            <!-- Generator Card -->
+            <div class="card-glass rounded-2xl p-8 shadow-xl">
+                
+                <!-- Card Header -->
+                <div class="text-center mb-8">
+                    <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-purple-500/20 flex items-center justify-center">
+                        <span class="text-4xl">🔐</span>
+                    </div>
+                    <h2 class="text-2xl font-bold mb-2">Account Generator</h2>
+                    <p class="text-white/60 text-sm">
+                        Click the button below to create a new Convex testnet account
+                    </p>
+                </div>
+                
+                <!-- Generate Button -->
+                <button 
+                    id="generateBtn"
+                    onclick="generateAccount()"
+                    class="w-full btn-glow py-4 rounded-xl font-bold text-lg mb-6 flex items-center justify-center gap-3"
+                >
+                    <span id="btnIcon">🚀</span>
+                    <span id="btnText">Generate New Account</span>
+                </button>
+                
+                <!-- Info Box - What you'll get -->
+                <div class="info-box rounded-lg p-4 mb-6">
+                    <p class="text-sm text-blue-300 font-medium mb-2">✨ What you'll receive:</p>
+                    <ul class="text-xs text-blue-200 space-y-1 ml-4">
+                        <li>• <strong>Account ID</strong> - Your unique address on Convex (e.g., #12345)</li>
+                        <li>• <strong>Public Key</strong> - Share this to receive tokens</li>
+                        <li>• <strong>Private Key (Seed)</strong> - KEEP THIS SECRET! Used to sign transactions</li>
+                        <li>• <strong>Free Testnet Coins</strong> - Automatically funded from faucet</li>
+                    </ul>
+                </div>
+                
+                <!-- Status Message Area (initially hidden) -->
+                <div id="statusArea" class="hidden mb-6">
+                    <div id="statusBox" class="rounded-lg p-4 flex items-center gap-3">
+                        <div id="statusSpinner" class="spinner hidden"></div>
+                        <span id="statusIcon"></span>
+                        <span id="statusText" class="text-sm"></span>
+                    </div>
+                </div>
+                
+                <!-- Results Area (initially hidden) -->
+                <div id="resultsArea" class="hidden result-card">
+                    
+                    <!-- Success Header -->
+                    <div class="success-box rounded-lg p-4 mb-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-xl">✅</span>
+                            <span class="font-bold text-green-400">Account Created Successfully!</span>
+                        </div>
+                        <p class="text-xs text-green-300">
+                            Your account is now active on the Convex testnet.
+                        </p>
+                    </div>
+                    
+                    <!-- Account ID -->
+                    <div class="bg-white/5 rounded-lg p-4 mb-3">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm font-medium text-white/80">Account ID</span>
+                            <button onclick="copyToClipboard('accountId')" class="copy-btn px-3 py-1 rounded text-xs">
+                                📋 Copy
+                            </button>
+                        </div>
+                        <div id="accountId" class="key-display bg-black/30 p-3 rounded text-green-400 text-lg font-bold">
+                            #0
+                        </div>
+                    </div>
+                    
+                    <!-- Public Key -->
+                    <div class="bg-white/5 rounded-lg p-4 mb-3">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm font-medium text-white/80">Public Key</span>
+                            <button onclick="copyToClipboard('publicKey')" class="copy-btn px-3 py-1 rounded text-xs">
+                                📋 Copy
+                            </button>
+                        </div>
+                        <div id="publicKey" class="key-display bg-black/30 p-3 rounded text-blue-400">
+                            0x...
+                        </div>
+                        <p class="text-xs text-white/50 mt-2">
+                            ℹ️ This is safe to share. Others use this to verify your identity.
+                        </p>
+                    </div>
+                    
+                    <!-- Private Key (Seed) - WITH WARNING -->
+                    <div class="bg-white/5 rounded-lg p-4 mb-3 border border-red-500/30">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm font-medium text-red-300">🔒 Private Key (Seed)</span>
+                            <button onclick="copyToClipboard('privateKey')" class="copy-btn px-3 py-1 rounded text-xs">
+                                📋 Copy
+                            </button>
+                        </div>
+                        <div id="privateKey" class="key-display bg-black/30 p-3 rounded text-red-400">
+                            ...
+                        </div>
+                        <div class="warning-box rounded p-2 mt-3">
+                            <p class="text-xs text-red-300">
+                                ⚠️ <strong>NEVER SHARE THIS!</strong> Anyone with this key can control your account and steal your tokens.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Balance Info -->
+                    <div class="bg-white/5 rounded-lg p-4 mb-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium text-white/80">Initial Balance</span>
+                            <span id="balance" class="text-green-400 font-bold">0 CVX</span>
+                        </div>
+                        <p class="text-xs text-white/50 mt-1">
+                            💰 Free testnet coins from the faucet
+                        </p>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="flex gap-3">
+                        <button 
+                            onclick="generateAccount()"
+                            class="flex-1 bg-purple-600 hover:bg-purple-700 py-3 rounded-lg font-medium transition-colors"
+                        >
+                            Generate Another
+                        </button>
+                        <a 
+                            href="https://wildyelir.github.io/vortex-testnet/" 
+                            target="_blank"
+                            class="flex-1 bg-green-600 hover:bg-green-700 py-3 rounded-lg font-medium text-center transition-colors"
+                        >
+                            Open VorteX DEX →
+                        </a>
+                    </div>
+                    
+                </div>
+                
+            </div>
+            
+            <!-- How It Works Section -->
+            <div class="card-glass rounded-2xl p-6 mt-6 shadow-xl" data-aos="fade-up" data-aos-delay="200">
+                <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                    <span>📖</span>
+                    How It Works
+                </h3>
+                <div class="space-y-4 text-sm">
+                    <div class="flex gap-3">
+                        <span class="bg-purple-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">1</span>
+                        <div>
+                            <p class="font-medium">Generate Key Pair</p>
+                            <p class="text-white/60">We create a secure Ed25519 cryptographic key pair locally in your browser.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-3">
+                        <span class="bg-purple-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">2</span>
+                        <div>
+                            <p class="font-medium">Create Account on Convex</p>
+                            <p class="text-white/60">Your public key is registered on the Convex testnet blockchain.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-3">
+                        <span class="bg-purple-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">3</span>
+                        <div>
+                            <p class="font-medium">Receive Free Testnet Coins</p>
+                            <p class="text-white/60">The faucet automatically sends coins to your new account for testing.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-3">
+                        <span class="bg-purple-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">4</span>
+                        <div>
+                            <p class="font-medium">Start Trading!</p>
+                            <p class="text-white/60">Use your private key to import your account into VorteX DEX.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        
+    </main>
+    
+    <!-- FOOTER -->
+    <footer class="container mx-auto px-4 py-8 text-center text-white/50 text-sm">
+        <p>
+            Convex Gateway - Powered by 
+            <a href="https://convex.world" target="_blank" class="text-purple-400 hover:text-purple-300">Convex</a>
+        </p>
+        <p class="mt-2">
+            Part of the <a href="https://wildyelir.github.io/vortex-dex/" target="_blank" class="text-purple-400 hover:text-purple-300">VorteX DEX</a> ecosystem
+        </p>
+    </footer>
+    
+    <!-- JAVASCRIPT LIBRARIES -->
+    <!-- TweetNaCl for Ed25519 key generation -->
+    <script src="https://cdn.jsdelivr.net/npm/tweetnacl@1.0.3/nacl-fast.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tweetnacl-util@0.15.1/nacl-util.min.js"></script>
+    
+    <!-- MAIN JAVASCRIPT -->
+    <script>
+        // ============================================
+        // CONFIGURATION
+        // ============================================
+        
+        // TESTNET URL - Hugging Face hosted Convex testnet
+        // API Documentation: https://huggingface.co/spaces/mikera1337/convex-testnet
+        const CONVEX_URL = 'https://mikera1337-convex-testnet.hf.space';
+        
+        // Amount of coins to request from faucet (in coppers)
+        // 1 CVX = 1,000,000,000 coppers
+        // So 10 CVX = 10,000,000,000 coppers
+        const FAUCET_AMOUNT = 10000000000; // 10 CVX
+        
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        
+        // Initialize animations and icons when page loads
+        window.onload = function() {
+            // Initialize AOS (Animate On Scroll) library
+            AOS.init({
+                duration: 800,
+                once: true
+            });
+            
+            // Replace Feather icons
+            feather.replace();
+            
+            console.log('✓ Convex Gateway initialized');
+            console.log('✓ Connected to testnet:', CONVEX_URL);
+        };
+        
+        // ============================================
+        // MAIN ACCOUNT GENERATION FUNCTION
+        // ============================================
+        
+        async function generateAccount() {
+            // Get UI elements
+            const btn = document.getElementById('generateBtn');
+            const btnIcon = document.getElementById('btnIcon');
+            const btnText = document.getElementById('btnText');
+            const resultsArea = document.getElementById('resultsArea');
+            
+            // Disable button while generating
+            btn.disabled = true;
+            btnIcon.textContent = '';
+            btnText.innerHTML = '<span class="spinner"></span> Generating...';
+            
+            // Hide previous results
+            resultsArea.classList.add('hidden');
+            
+            try {
+                // ========== STEP 1: Generate Key Pair ==========
+                showStatus('Generating secure key pair...', 'info');
+                
+                // Generate a random 32-byte seed
+                // This is done securely in the browser using crypto.getRandomValues
+                const seed = nacl.randomBytes(32);
+                
+                // Create Ed25519 key pair from seed
+                const keyPair = nacl.sign.keyPair.fromSeed(seed);
+                
+                // Convert to hex strings for display
+                const privateKeyHex = bytesToHex(seed);             // This is the "seed" - the private key
+                const publicKeyHex = bytesToHex(keyPair.publicKey); // This is the public key
+                
+                console.log('✓ Key pair generated');
+                console.log('  Public Key:', publicKeyHex);
+                
+                // ========== STEP 2: Create Account on Convex ==========
+                showStatus('Creating account on Convex testnet...', 'info');
+                
+                // Call the Convex API to create an account with this public key
+                // API: POST /api/v1/createAccount
+                // Body: { "accountKey": "hex_public_key" }
+                const createResponse = await fetch(`${CONVEX_URL}/api/v1/createAccount`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        accountKey: publicKeyHex
+                    })
+                });
+                
+                // Check if the request was successful
+                if (!createResponse.ok) {
+                    const errorText = await createResponse.text();
+                    throw new Error('Failed to create account: ' + (errorText || createResponse.status));
+                }
+                
+                // Parse the response
+                // Response: { "address": "123", "amount": "..." }
+                const createData = await createResponse.json();
+                console.log('Create account response:', createData);
+                
+                // Extract the account address (ID)
+                // The API returns address as a string like "123"
+                let accountAddress = createData.address;
+                
+                // Handle if address is returned as string or number
+                if (typeof accountAddress === 'string') {
+                    accountAddress = parseInt(accountAddress, 10);
+                }
+                
+                if (accountAddress === undefined || accountAddress === null || isNaN(accountAddress)) {
+                    throw new Error('No account address returned from server');
+                }
+                
+                console.log('✓ Account created:', accountAddress);
+                
+                // ========== STEP 3: Request Faucet Coins ==========
+                showStatus('Requesting testnet coins from faucet...', 'info');
+                
+                // Call the faucet to get free testnet coins
+                // API: POST /api/v1/faucet
+                // Body: { "address": "123", "amount": "10000000000" }
+                const faucetResponse = await fetch(`${CONVEX_URL}/api/v1/faucet`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        address: accountAddress.toString(),
+                        amount: FAUCET_AMOUNT.toString()
+                    })
+                });
+                
+                // Parse faucet response
+                let faucetData = {};
+                let balance = 0;
+                
+                if (faucetResponse.ok) {
+                    faucetData = await faucetResponse.json();
+                    console.log('Faucet response:', faucetData);
+                    
+                    // The faucet returns the amount in coppers as a string
+                    // Response: { "address": "123", "amount": "10000000000" }
+                    if (faucetData.amount) {
+                        const amountNum = parseInt(faucetData.amount, 10);
+                        balance = amountNum / 1000000000; // Convert coppers to CVX
+                    }
+                    
+                    console.log('✓ Faucet coins received:', balance, 'CVX');
+                } else {
+                    console.warn('Faucet request failed, but account is created');
+                    const faucetError = await faucetResponse.text();
+                    console.warn('Faucet error:', faucetError);
+                    balance = 0;
+                }
+                
+                // ========== STEP 4: Display Results ==========
+                
+                // Clear status
+                hideStatus();
+                
+                // Fill in the account details
+                document.getElementById('accountId').textContent = '#' + accountAddress;
+                document.getElementById('publicKey').textContent = publicKeyHex;
+                document.getElementById('privateKey').textContent = privateKeyHex;
+                document.getElementById('balance').textContent = balance.toFixed(2) + ' CVX';
+                
+                // Show results area
+                resultsArea.classList.remove('hidden');
+                
+                // Scroll to results
+                resultsArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
+                console.log('========================================');
+                console.log('✅ ACCOUNT GENERATION COMPLETE');
+                console.log('========================================');
+                console.log('Account ID:  #' + accountAddress);
+                console.log('Public Key:  ' + publicKeyHex);
+                console.log('Private Key: ' + privateKeyHex);
+                console.log('Balance:     ' + balance + ' CVX');
+                console.log('========================================');
+                
+            } catch (error) {
+                // Show error message
+                console.error('Account generation failed:', error);
+                showStatus('Error: ' + error.message, 'error');
+                
+            } finally {
+                // Re-enable button
+                btn.disabled = false;
+                btnIcon.textContent = '🚀';
+                btnText.textContent = 'Generate New Account';
+            }
+        }
+        
+        // ============================================
+        // HELPER FUNCTIONS
+        // ============================================
+        
+        /**
+         * Show a status message to the user
+         * @param {string} message - The message to display
+         * @param {string} type - 'info', 'success', or 'error'
+         */
+        function showStatus(message, type) {
+            const statusArea = document.getElementById('statusArea');
+            const statusBox = document.getElementById('statusBox');
+            const statusSpinner = document.getElementById('statusSpinner');
+            const statusIcon = document.getElementById('statusIcon');
+            const statusText = document.getElementById('statusText');
+            
+            // Show the status area
+            statusArea.classList.remove('hidden');
+            
+            // Remove previous styling
+            statusBox.className = 'rounded-lg p-4 flex items-center gap-3';
+            
+            // Apply styling based on type
+            if (type === 'info') {
+                statusBox.classList.add('info-box');
+                statusSpinner.classList.remove('hidden');
+                statusIcon.textContent = '';
+            } else if (type === 'success') {
+                statusBox.classList.add('success-box');
+                statusSpinner.classList.add('hidden');
+                statusIcon.textContent = '✅';
+            } else if (type === 'error') {
+                statusBox.classList.add('warning-box');
+                statusSpinner.classList.add('hidden');
+                statusIcon.textContent = '❌';
+            }
+            
+            statusText.textContent = message;
+        }
+        
+        /**
+         * Hide the status message
+         */
+        function hideStatus() {
+            const statusArea = document.getElementById('statusArea');
+            statusArea.classList.add('hidden');
+        }
+        
+        /**
+         * Copy text to clipboard
+         * @param {string} elementId - The ID of the element containing text to copy
+         */
+        function copyToClipboard(elementId) {
+            const element = document.getElementById(elementId);
+            const text = element.textContent;
+            
+            // Use the modern clipboard API
+            navigator.clipboard.writeText(text).then(() => {
+                // Show feedback
+                showStatus('Copied to clipboard!', 'success');
+                
+                // Hide after 2 seconds
+                setTimeout(() => {
+                    hideStatus();
+                }, 2000);
+                
+            }).catch(err => {
+                console.error('Copy failed:', err);
+                showStatus('Failed to copy', 'error');
+            });
+        }
+        
+        /**
+         * Convert bytes to hexadecimal string
+         * @param {Uint8Array} bytes - The bytes to convert
+         * @returns {string} Hex string
+         */
+        function bytesToHex(bytes) {
+            return Array.from(bytes)
+                .map(b => b.toString(16).padStart(2, '0'))
+                .join('');
+        }
+        
+        /**
+         * Convert hexadecimal string to bytes
+         * @param {string} hex - The hex string to convert
+         * @returns {Uint8Array} Bytes
+         */
+        function hexToBytes(hex) {
+            // Remove 0x prefix if present
+            hex = hex.replace(/^0x/, '');
+            
+            const bytes = new Uint8Array(hex.length / 2);
+            for (let i = 0; i < hex.length; i += 2) {
+                bytes[i / 2] = parseInt(hex.substr(i, 2), 16);
+            }
+            return bytes;
+        }
+    </script>
+    
+</body>
+</html>
